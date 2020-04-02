@@ -73,9 +73,8 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $data['new_hobbies'] = explode(',', $data['new_hobbies']);
-
-        if(isset($data['new_hobbies'])) {
+        if(isset($data['new_hobbies']) && $data['new_hobbies']) {
+            $data['new_hobbies'] = explode(',', $data['new_hobbies']);
             foreach ($data['new_hobbies'] as $newHobby) {
                 $hobby = Hobbies::create([
                     'name' => ucfirst(trim($newHobby))
@@ -88,10 +87,13 @@ class RegisterController extends Controller
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'gender' => $data['gender'],
             'password' => Hash::make($data['password']),
         ]);
 
-        $user->hobbies()->attach($data['hobbies']);
+        if(isset($data['hobbies']) && $data['hobbies']) {
+            $user->hobbies()->attach($data['hobbies']);
+        }
 
         return $user;
     }

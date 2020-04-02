@@ -20,6 +20,12 @@
     <!-- Styles -->
     <link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        .registered-user.jumbotron {
+            padding: 1rem 1rem;
+            background: #e3e3e3;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
@@ -51,6 +57,21 @@
                                 </li>
                             @endif
                         @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('home') }}">{{ __('Users') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('friends') }}">{{ __('Friends') }} <span class="badge-success badge">{{ Auth::user()->getFriendsCount() }}</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('request_user') }}">{{ __('Requests') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('pending_user') }}">{{ __('Pending') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('blocked_user') }}">{{ __('Blocked') }}</a>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
