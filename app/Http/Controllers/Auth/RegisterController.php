@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Hobbies;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
@@ -41,6 +42,13 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+    public function showRegistrationForm()
+    {
+        $hobbies = Hobbies::all();
+
+        return view('auth.register', compact('hobbies'));
+    }
+
     /**
      * Get a validator for an incoming registration request.
      *
@@ -51,6 +59,7 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
+            'gender' => ['required'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -64,10 +73,26 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $data['new_hobbies'] = explode(',', $data['new_hobbies']);
+
+        if(isset($data['new_hobbies'])) {
+            foreach ($data['new_hobbies'] as $newHobby) {
+                $hobby = Hobbies::create([
+                    'name' => ucfirst(trim($newHobby))
+                ]);
+
+                $data['hobbies'][] = $hobby->id;
+            }
+        }
+
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+        $user->hobbies()->attach($data['hobbies']);
+
+        return $user;
     }
 }
