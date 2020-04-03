@@ -82,6 +82,8 @@
                             <li class="dropdown nav-item">
                                 <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">History (<b>2</b>)</a>
                                 <ul class="dropdown-menu notify-drop">
+                                
+                                    @if(isset($notification_users))
                                     <div class="drop-content">
                                         @foreach($notification_users as $user)
                                             @if(Auth::user()->hasFriendRequestFrom($user))
@@ -111,6 +113,7 @@
                                             @endif
                                         @endforeach
                                     </div>
+                                    @endif
                                 </ul>
                             </li>
                             <li class="nav-item dropdown">
