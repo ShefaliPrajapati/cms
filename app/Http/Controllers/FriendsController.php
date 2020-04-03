@@ -30,6 +30,10 @@ class FriendsController extends Controller
         return redirect('home')->with('success', 'Request sent successfully!');
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function blockUserAction($id)
     {
         $user = Auth::user();
@@ -39,6 +43,10 @@ class FriendsController extends Controller
         return redirect('home')->with('success', 'User is Blocked now!');
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function unblockUserAction($id)
     {
         $user = Auth::user();
@@ -48,6 +56,10 @@ class FriendsController extends Controller
         return redirect('home')->with('success', 'User is Unblocked now!');
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function acceptAction($id)
     {
         $user = Auth::user();
@@ -57,6 +69,10 @@ class FriendsController extends Controller
         return redirect(route('pending_user'))->with('success', 'You are now friends!');
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function denyAction($id)
     {
         $user = Auth::user();

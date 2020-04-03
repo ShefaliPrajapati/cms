@@ -6,6 +6,25 @@
         <div class="col-md-8">
             <h1>Users List</h1>
             <br>
+            <form class="form-div form-inline" method="get">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <input type="hidden" value="{{ csrf_token() }}">
+                            <div class="form-group">
+                                <input type="radio" name="gender" value="MALE" >Male
+                                <input type="radio" name="gender" value="FEMALE" >Female
+                            </div>
+                            <div class="form-group">
+                                @foreach($hobbies as $hobby)
+                                    <input type="checkbox" id="{{ $hobby->id }}" name="hobbies[]" value="{{ $hobby->id }}">
+                                    <label for="{{ $hobby->id }}"> {{ $hobby->name }}</label>
+                                @endforeach
+                            </div>
+                            <input type="submit" class="btn btn-info" value="Filter">
+                        <button type="button" class="btn btn-info" onClick="window.location.href=location.href.split('?')[0];">Reset</button>
+                    </div>
+                </div>
+            </form>
             @foreach($users as $user)
                 @if(!Auth::user()->isBlockedBy($user))
             <div class="registered-user jumbotron">

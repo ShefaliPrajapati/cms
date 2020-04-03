@@ -19,6 +19,9 @@ class UserController extends Controller
         $this->middleware('auth');
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function requestListAction()
     {
         $user = Auth::user();
@@ -29,6 +32,9 @@ class UserController extends Controller
         return view('user.request', ['users' => $users]);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function blockedUserAction()
     {
         $user = Auth::user();
@@ -39,6 +45,9 @@ class UserController extends Controller
         return view('user.block', ['users' => $users]);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function pendingUserAction()
     {
         $user = Auth::user();
@@ -49,6 +58,9 @@ class UserController extends Controller
         return view('user.pending', ['users' => $users]);
     }
 
+    /**
+     * @return \IlluminateContracts\View\Factory|\Illuminate\View\View
+     */
     public function fiendsListAction()
     {
         $user = Auth::user();

@@ -26,3 +26,7 @@ Route::get('/user/pending-list', 'UserController@pendingUserAction')->name('pend
 Route::get('/user/blocked/list', 'UserController@blockedUserAction')->name('blocked_user');
 Route::get('/user/friends/list', 'UserController@fiendsListAction')->name('friends');
 Route::get('/user/request/list', 'UserController@requestListAction')->name('request_user');
+
+Route::get('/user/history', function () {
+     return view('user.history');
+})->name('history');

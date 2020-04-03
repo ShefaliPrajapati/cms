@@ -25,6 +25,13 @@
             padding: 1rem 1rem;
             background: #e3e3e3;
         }
+        .dropdown-menu.notify-drop.show {
+            width: 300px;
+            margin-left: -85px;
+        }
+        .drop-content li {
+            border-bottom: 1px solid #cecaca;
+        }
     </style>
 </head>
 <body>
@@ -71,6 +78,40 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('blocked_user') }}">{{ __('Blocked') }}</a>
+                            </li>
+                            <li class="dropdown nav-item">
+                                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">History (<b>2</b>)</a>
+                                <ul class="dropdown-menu notify-drop">
+                                    <div class="drop-content">
+                                        @foreach($notification_users as $user)
+                                            @if(Auth::user()->hasFriendRequestFrom($user))
+                                                <li>
+                                                    <div class="col-md-12 col-sm-12 col-xs-12 pd-5">
+                                                       {{ $user->name }} Has requested you to become friend.
+                                                    </div>
+                                                </li>
+                                            @elseif(Auth::user()->hasSentFriendRequestTo($user))
+                                                <li>
+                                                    <div class="col-md-12 col-sm-12 col-xs-12 pd-5">
+                                                        You sent friend request to {{ $user->name }}.
+                                                    </div>
+                                                </li>
+                                            @elseif(Auth::user()->hasBlocked($user))
+                                                <li>
+                                                    <div class="col-md-12 col-sm-12 col-xs-12 pd-5">
+                                                        You have blocked to {{ $user->name }}.
+                                                    </div>
+                                                </li>
+                                            @elseif(Auth::user()->isFriendWith($user))
+                                                <li>
+                                                    <div class="col-md-12 col-sm-12 col-xs-12 pd-5">
+                                                        You are now friend with {{ $user->name }}.
+                                                    </div>
+                                                </li>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                </ul>
                             </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

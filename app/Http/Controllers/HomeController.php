@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Hobbies;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,37 +20,32 @@ class HomeController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Show the application home.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         $users = User::all()->except(Auth::id());
+        $hobbies = Hobbies::all();
 
-        return view('home', ['users' => $users]);
-    }
+        $data = $request->all();
+        if ($data) {
+            if (isset($data['gender']) && isset($data['hobbies'])) {
+                $q = User::where('gender', $data['gender'])->whereHas('hobbies', function ($query) use ($data) {
+                    $query->whereIn('hobbies.id', $data['hobbies']);
+                });
+            } elseif (isset($data['gender'])) {
+                $q = User::where('gender', $data['gender']);
+            } elseif (isset($data['hobbies'])) {
+                $q = User::whereHas('hobbies', function ($query) use ($data) {
+                    $query->whereIn('hobbies.id', $data['hobbies']);
+                });
+            }
 
-    public function blockedUserAction()
-    {
+            $users = $q->get();
+        }
 
-    }
-
-    public function pendingUserAction()
-    {
-        $user = Auth::user();
-        $friendships    = $user->getPendingFriendships();
-        $senders        = $friendships->pluck('recipient_id')->all();
-        $users          = User::where('id', '!=', Auth::user()->id)->whereIn('id', $senders)->get();
-
-        return view('user.pending', ['users' => $users]);
-    }
-
-    public function fiendsListAction()
-    {
-        $user = Auth::user();
-        $users = $user->getAcceptedFriendships();
-
-        return view('user.pending', ['users' => $users]);
+        return view('home', ['users' => $users, 'hobbies' => $hobbies]);
     }
 }
